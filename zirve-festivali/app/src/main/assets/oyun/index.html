@@ -50,9 +50,15 @@ button:focus-visible{outline:2px solid var(--gunbatimi);outline-offset:2px}
 .ozellik{display:grid;grid-template-columns:62px 1fr;align-items:center;gap:6px;font-size:11px;color:var(--sis)}
 .bar{height:5px;border-radius:3px;background:rgba(243,246,244,.12);overflow:hidden}
 .bar i{display:block;height:100%;background:var(--kar)}
-.sur{align-self:flex-end;font-family:var(--font-display);font-weight:900;font-size:22px;letter-spacing:2px;padding:14px 46px;
+.sur{flex-shrink:0;font-family:var(--font-display);font-weight:900;font-size:22px;letter-spacing:2px;padding:14px 46px;
   border:0;border-radius:12px;background:var(--gunbatimi);color:#1b0d00;box-shadow:0 8px 30px rgba(255,122,26,.35)}
 .ayarlar{display:flex;gap:8px;flex-wrap:wrap}
+.haritalar{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.harita{padding:8px 10px;border-radius:10px;border:1px solid rgba(243,246,244,.14);background:rgba(13,23,20,.6);font-size:13px;font-weight:700;text-align:left}
+.harita small{display:block;font-weight:400;color:var(--sis);font-size:11px}
+.harita.secili{border-color:var(--gunbatimi);background:rgba(255,122,26,.16)}
+.alt-satir{display:flex;align-items:flex-end;justify-content:space-between;gap:14px}
+.emek{margin:0;font-size:10px;line-height:1.35;color:var(--sis);max-width:46ch;opacity:.85}
 .kucuk{padding:8px 12px;border-radius:8px;border:1px solid rgba(243,246,244,.18);background:rgba(13,23,20,.6);font-size:13px}
 
 /* ---------- HUD ---------- */
@@ -130,8 +136,9 @@ button:focus-visible{outline:2px solid var(--gunbatimi);outline-offset:2px}
 
 <div id="menu" class="gizli">
   <div class="sol">
-    <div class="ust-etiket">ÇAM ORMANI · DAĞ YOLU</div>
+    <div class="ust-etiket" id="haritaEtiket">ÇAM ORMANI · DAĞ YOLU</div>
     <h1 class="baslik">ZİRVE<br><span>FESTİVALİ</span></h1>
+    <div class="haritalar" id="haritalar"></div>
     <div class="modlar" id="modlar"></div>
   </div>
   <div class="sag">
@@ -140,7 +147,10 @@ button:focus-visible{outline:2px solid var(--gunbatimi);outline-offset:2px}
       <button class="kucuk" id="sesAyar">Ses: Açık</button>
       <button class="kucuk" id="kaliteAyar">Grafik: Yüksek</button>
     </div>
-    <button class="sur" id="surBtn">SÜR</button>
+    <div class="alt-satir">
+      <p class="emek">3D modeller: “Ferrari 458 Italia” – vicent091036 · “Car Concept” – Khronos Group (Unity Fan’ın modelinden) · CC BY 4.0</p>
+      <button class="sur" id="surBtn">SÜR</button>
+    </div>
   </div>
 </div>
 
@@ -168,6 +178,8 @@ button:focus-visible{outline:2px solid var(--gunbatimi);outline-offset:2px}
 <div id="yukleniyor">Dağlar yükleniyor…</div>
 
 <script src="three.min.js"></script>
+<script src="ekler.js"></script>
+<script src="modeller.js"></script>
 <script src="oyun.js"></script>
 </body>
 </html>
