@@ -338,11 +338,29 @@ public class GeoService extends AccessibilityService {
                     WindowManager.LayoutParams.WRAP_CONTENT,
                     WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY,
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                            | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                             | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                     PixelFormat.TRANSLUCENT);
             lp.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
             lp.y = dp(56);
+
+            // Yazıya art arda 2 kez dokununca yazı kapanır
+            final long[] sonYaziDokunma = {0};
+            t.setOnTouchListener((view, e) -> {
+                if (e.getAction() == MotionEvent.ACTION_DOWN) {
+                    long simdi = SystemClock.uptimeMillis();
+                    if (simdi - sonYaziDokunma[0] < 400) {
+                        try {
+                            wm.removeView(t);
+                        } catch (Exception ignored) {
+                        }
+                        if (yazi == t) yazi = null;
+                        sonYaziDokunma[0] = 0;
+                    } else {
+                        sonYaziDokunma[0] = simdi;
+                    }
+                }
+                return true;
+            });
 
             try {
                 wm.addView(t, lp);
