@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Zirve Festivali</title>
+<style>
+:root{
+  /* Dağ festivali: çam yeşili gece, gün batımı turuncusu vurgu, kar beyazı yazı. Yatay tek ekran. */
+  --gece:#0d1714;
+  --cam:#1f3a2e;
+  --gunbatimi:#ff7a1a;
+  --kar:#f3f6f4;
+  --sis:#a9b8b0;
+  --radar:#3ec5ff;
+  --font:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-display:"Arial Black","Segoe UI",Roboto,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--gece);color:var(--kar);font-family:var(--font);
+  touch-action:none;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
+canvas#sahne{position:fixed;inset:0;width:100%;height:100%;display:block}
+.gizli{display:none !important}
+button{font-family:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:2px solid var(--gunbatimi);outline-offset:2px}
+
+/* ---------- Menü ---------- */
+#menu{position:fixed;inset:0;display:grid;grid-template-columns:minmax(220px,1fr) minmax(300px,1.3fr);gap:20px;
+  padding:max(16px,env(safe-area-inset-top)) max(20px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left));
+  background:linear-gradient(90deg,rgba(13,23,20,.94) 0%,rgba(13,23,20,.78) 55%,rgba(13,23,20,.55) 100%)}
+.sol{display:flex;flex-direction:column;gap:10px;min-height:0}
+.ust-etiket{font-size:12px;letter-spacing:4px;color:var(--gunbatimi);font-weight:700}
+.baslik{font-family:var(--font-display);font-size:clamp(28px,5.2vw,46px);line-height:.95;margin:0 0 4px;font-weight:900;text-wrap:balance}
+.baslik span{color:var(--gunbatimi)}
+.modlar{display:flex;flex-direction:column;gap:6px;overflow:auto;min-height:0}
+.mod{display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left;padding:9px 12px;border-radius:10px;
+  border:1px solid rgba(243,246,244,.14);background:rgba(31,58,46,.55);font-size:14px}
+.mod b{display:block;font-size:15px}
+.mod small{color:var(--sis);font-size:12px}
+.mod .rek{font-size:12px;color:var(--sis);white-space:nowrap;font-variant-numeric:tabular-nums}
+.mod.secili{border-color:var(--gunbatimi);background:rgba(255,122,26,.16)}
+.sag{display:flex;flex-direction:column;gap:10px;min-height:0;justify-content:space-between}
+.arabalar{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.araba{text-align:left;padding:12px;border-radius:12px;border:1px solid rgba(243,246,244,.14);background:rgba(13,23,20,.6);display:flex;flex-direction:column;gap:6px}
+.araba.secili{border-color:var(--gunbatimi);box-shadow:0 0 0 1px var(--gunbatimi) inset}
+.araba .ad{font-family:var(--font-display);font-size:18px;font-weight:900}
+.araba .tip{font-size:12px;color:var(--sis)}
+.renk{height:6px;border-radius:3px}
+.ozellik{display:grid;grid-template-columns:62px 1fr;align-items:center;gap:6px;font-size:11px;color:var(--sis)}
+.bar{height:5px;border-radius:3px;background:rgba(243,246,244,.12);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--kar)}
+.sur{align-self:flex-end;font-family:var(--font-display);font-weight:900;font-size:22px;letter-spacing:2px;padding:14px 46px;
+  border:0;border-radius:12px;background:var(--gunbatimi);color:#1b0d00;box-shadow:0 8px 30px rgba(255,122,26,.35)}
+.ayarlar{display:flex;gap:8px;flex-wrap:wrap}
+.kucuk{padding:8px 12px;border-radius:8px;border:1px solid rgba(243,246,244,.18);background:rgba(13,23,20,.6);font-size:13px}
+
+/* ---------- HUD ---------- */
+#hud{position:fixed;inset:0;pointer-events:none}
+.hiz{position:absolute;left:50%;bottom:max(14px,env(safe-area-inset-bottom));transform:translateX(-50%);text-align:center;line-height:1}
+.hiz b{font-family:var(--font-display);font-size:46px;font-weight:900;font-variant-numeric:tabular-nums;text-shadow:0 2px 10px rgba(0,0,0,.6)}
+.hiz span{display:block;font-size:12px;color:var(--sis);letter-spacing:2px;margin-top:2px}
+.vites{position:absolute;left:50%;bottom:calc(max(14px,env(safe-area-inset-bottom)) + 66px);transform:translateX(-50%);
+  font-family:var(--font-display);font-size:14px;padding:2px 8px;border-radius:6px;background:rgba(0,0,0,.4)}
+.gorev{position:absolute;left:50%;top:max(10px,env(safe-area-inset-top));transform:translateX(-50%);text-align:center;
+  padding:8px 16px;border-radius:12px;background:rgba(13,23,20,.62);min-width:180px}
+.gorev .b1{font-size:11px;letter-spacing:3px;color:var(--gunbatimi);font-weight:700}
+.gorev .b2{font-family:var(--font-display);font-size:24px;font-weight:900;font-variant-numeric:tabular-nums}
+.gorev .b3{font-size:12px;color:var(--sis);font-variant-numeric:tabular-nums}
+#mini{position:absolute;right:max(12px,env(safe-area-inset-right));top:max(10px,env(safe-area-inset-top));width:128px;height:128px;
+  border-radius:50%;background:rgba(13,23,20,.55);border:2px solid rgba(243,246,244,.25)}
+#bildirim{position:absolute;left:50%;top:32%;transform:translate(-50%,-50%);text-align:center;font-family:var(--font-display);
+  font-weight:900;font-size:34px;text-shadow:0 3px 16px rgba(0,0,0,.7);transition:opacity .25s;opacity:0}
+#bildirim small{display:block;font-family:var(--font);font-weight:700;font-size:15px;color:var(--sis);margin-top:4px}
+#ok{position:absolute;left:50%;top:calc(max(10px,env(safe-area-inset-top)) + 84px);width:36px;height:36px;margin-left:-18px}
+#drift{position:absolute;left:50%;top:calc(max(10px,env(safe-area-inset-top)) + 90px);transform:translateX(-50%);
+  font-family:var(--font-display);font-weight:900;font-size:26px;color:var(--gunbatimi);text-shadow:0 2px 10px rgba(0,0,0,.6);text-align:center}
+#drift small{display:block;font-size:13px;color:var(--kar)}
+
+/* ---------- Kontroller ---------- */
+#kontrol{position:fixed;inset:0;pointer-events:none}
+.tus{position:absolute;pointer-events:auto;touch-action:none;border:2px solid rgba(243,246,244,.35);background:rgba(13,23,20,.38);
+  border-radius:18px;display:grid;place-items:center;font-weight:800;font-size:15px;letter-spacing:1px;color:rgba(243,246,244,.9)}
+.tus.basili{background:rgba(255,122,26,.45);border-color:var(--gunbatimi)}
+#tSol{left:max(18px,env(safe-area-inset-left));bottom:max(18px,env(safe-area-inset-bottom));width:92px;height:92px;font-size:34px}
+#tSag{left:calc(max(18px,env(safe-area-inset-left)) + 106px);bottom:max(18px,env(safe-area-inset-bottom));width:92px;height:92px;font-size:34px}
+#tGaz{right:max(18px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));width:92px;height:140px}
+#tFren{right:calc(max(18px,env(safe-area-inset-right)) + 106px);bottom:max(18px,env(safe-area-inset-bottom));width:92px;height:92px}
+#tEl{right:calc(max(18px,env(safe-area-inset-right)) + 106px);bottom:calc(max(18px,env(safe-area-inset-bottom)) + 104px);width:92px;height:56px;font-size:12px}
+.ust-tus{position:absolute;pointer-events:auto;width:46px;height:46px;border-radius:12px;border:1px solid rgba(243,246,244,.25);
+  background:rgba(13,23,20,.55);font-size:16px;display:grid;place-items:center}
+#tDur{left:max(12px,env(safe-area-inset-left));top:max(10px,env(safe-area-inset-top))}
+#tKamera{right:calc(max(12px,env(safe-area-inset-right)) + 140px);top:max(10px,env(safe-area-inset-top))}
+
+/* ---------- Duraklat / bitiş ---------- */
+.panel{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(13,23,20,.82);text-align:center;padding:20px}
+.panel h2{font-family:var(--font-display);font-size:32px;margin:0;font-weight:900}
+.panel .satir{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.panel .buyuk{font-family:var(--font-display);font-weight:900;font-size:17px;padding:12px 26px;border-radius:10px;border:0;background:var(--gunbatimi);color:#1b0d00}
+.panel .ikinci{background:transparent;border:1px solid rgba(243,246,244,.35);color:var(--kar)}
+.panel p{margin:0;color:var(--sis);font-size:15px}
+#sonuc b{font-family:var(--font-display);font-size:40px;color:var(--kar);font-variant-numeric:tabular-nums}
+#dik{position:fixed;inset:0;display:none;align-items:center;justify-content:center;text-align:center;padding:30px;background:var(--gece);font-size:18px;z-index:9}
+@media (orientation:portrait){#dik{display:flex}}
+#yukleniyor{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--gece);font-size:16px;color:var(--sis);z-index:8}
+</style>
+</head>
+<body>
+<canvas id="sahne"></canvas>
+
+<div id="hud" class="gizli">
+  <div class="gorev" id="gorev"><div class="b1" id="g1"></div><div class="b2" id="g2"></div><div class="b3" id="g3"></div></div>
+  <svg id="ok" class="gizli" viewBox="0 0 36 36"><path d="M18 3 L31 30 L18 23 L5 30 Z" fill="#ff7a1a" stroke="#1b0d00" stroke-width="1.5"/></svg>
+  <div id="drift" class="gizli"></div>
+  <canvas id="mini" width="256" height="256"></canvas>
+  <div id="bildirim"></div>
+  <div class="vites" id="vites">1</div>
+  <div class="hiz"><b id="hizSayi">0</b><span>KM/SA</span></div>
+</div>
+
+<div id="kontrol" class="gizli">
+  <div class="tus" id="tSol" aria-label="Sola">◀</div>
+  <div class="tus" id="tSag" aria-label="Sağa">▶</div>
+  <div class="tus" id="tGaz">GAZ</div>
+  <div class="tus" id="tFren">FREN</div>
+  <div class="tus" id="tEl">EL FRENİ</div>
+  <button class="ust-tus" id="tDur" aria-label="Duraklat">❚❚</button>
+  <button class="ust-tus" id="tKamera" aria-label="Kamera değiştir">🎥</button>
+</div>
+
+<div id="menu" class="gizli">
+  <div class="sol">
+    <div class="ust-etiket">ÇAM ORMANI · DAĞ YOLU</div>
+    <h1 class="baslik">ZİRVE<br><span>FESTİVALİ</span></h1>
+    <div class="modlar" id="modlar"></div>
+  </div>
+  <div class="sag">
+    <div class="arabalar" id="arabalar"></div>
+    <div class="ayarlar">
+      <button class="kucuk" id="sesAyar">Ses: Açık</button>
+      <button class="kucuk" id="kaliteAyar">Grafik: Yüksek</button>
+    </div>
+    <button class="sur" id="surBtn">SÜR</button>
+  </div>
+</div>
+
+<div id="durPanel" class="panel gizli">
+  <h2>DURAKLATILDI</h2>
+  <div class="satir">
+    <button class="buyuk" id="devamBtn">DEVAM</button>
+    <button class="buyuk ikinci" id="yenidenBtn">YENİDEN BAŞLA</button>
+    <button class="buyuk ikinci" id="garajBtn">GARAJ</button>
+  </div>
+</div>
+
+<div id="sonPanel" class="panel gizli">
+  <p id="sonBaslik">TUR TAMAMLANDI</p>
+  <div id="sonuc"><b id="sonSure">0:00.00</b></div>
+  <p id="sonRekor"></p>
+  <div class="satir">
+    <button class="buyuk" id="tekrarBtn">TEKRAR YARIŞ</button>
+    <button class="buyuk ikinci" id="serbestBtn">SERBEST SÜR</button>
+    <button class="buyuk ikinci" id="garaj2Btn">GARAJ</button>
+  </div>
+</div>
+
+<div id="dik">Oynamak için telefonu yatay çevirin.</div>
+<div id="yukleniyor">Dağlar yükleniyor…</div>
+
+<script src="three.min.js"></script>
+<script src="oyun.js"></script>
+</body>
+</html>

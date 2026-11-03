@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Uygulama simgesi: gün batımı gökyüzü, iki dağ, kıvrılan yol -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path android:fillColor="#0D1714" android:pathData="M0,0h108v108h-108z" />
+    <path android:fillColor="#FF7A1A" android:pathData="M54,46m-18,0a18,18 0,1 1,36 0a18,18 0,1 1,-36 0" />
+    <path android:fillColor="#1F3A2E" android:pathData="M0,78 L30,40 L52,66 L72,44 L108,82 L108,108 L0,108 Z" />
+    <path android:fillColor="#F3F6F4" android:pathData="M30,40 L36,48 L32,50 L28,46 L24,48 Z" />
+    <path android:fillColor="#F3F6F4" android:pathData="M72,44 L79,52 L75,53 L71,50 L66,51 Z" />
+    <path android:fillColor="#3A3D42" android:pathData="M44,108 C48,96 70,92 62,82 C58,77 52,76 56,72 L60,72 C58,76 66,78 70,84 C78,94 60,100 62,108 Z" />
+    <path android:fillColor="#F2C230" android:pathData="M53,104 L55,104 L56,99 L54,99 Z M58,93 L60,93 L62,89 L60,89 Z" />
+</vector>

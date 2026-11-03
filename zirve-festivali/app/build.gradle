@@ -1,0 +1,36 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.ruslan.zirve'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.ruslan.zirve"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+    }
+
+    // Sabit imza: yeni sürümler eskisinin üzerine kurulur, rekorlar silinmez
+    signingConfigs {
+        sabit {
+            storeFile file('imza.jks')
+            storePassword 'zirve2026'
+            keyAlias 'oyun'
+            keyPassword 'zirve2026'
+        }
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.sabit
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
