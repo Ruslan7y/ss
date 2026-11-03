@@ -10,8 +10,23 @@ android {
         applicationId "com.ruslan.ulkebulucu"
         minSdk 30          // Android 11 ve üstü (ekran görüntüsü özelliği için gerekli)
         targetSdk 34
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
+    }
+
+    // Sabit imza: sonraki sürümler eskisinin üzerine kurulur
+    signingConfigs {
+        sabit {
+            storeFile file('imza.jks')
+            storePassword 'ulke2026'
+            keyAlias 'ulke'
+            keyPassword 'ulke2026'
+        }
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.sabit
+        }
     }
 
     compileOptions {

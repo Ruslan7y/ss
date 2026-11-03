@@ -44,13 +44,10 @@ public class GeoService extends AccessibilityService {
 
     private static final String TALIMAT =
             "Bu bir ekran görüntüsü; büyük ihtimalle bir sokak görünümü (Street View / GeoGuessr). "
-            + "Görünen yerin hangi ülkede olduğunu bul. Şu ipuçlarını kullan: tabelalardaki yazı ve dil, "
-            + "telefon numarası biçimi, plakalar, trafiğin hangi şeritten aktığı, yol çizgileri, "
-            + "trafik işaretleri, elektrik direkleri, araç modelleri, bitki örtüsü ve mimari. "
-            + "Cevabı Türkçe ve tam olarak şu biçimde, çok kısa ver:\n"
-            + "Ülke: ...\n"
-            + "Bölge/şehir (tahmin): ...\n"
-            + "İpuçları: en fazla 2 kısa madde";
+            + "Görünen yerin hangi ülkede olduğunu bul. Tabelalardaki yazı ve dil, telefon numarası biçimi, plakalar, "
+            + "trafiğin hangi şeritten aktığı, yol çizgileri, trafik işaretleri, elektrik direkleri, araç modelleri, "
+            + "bitki örtüsü ve mimari gibi ipuçlarını kullan. "
+            + "Cevap olarak SADECE ülkenin Türkçe adını yaz (örneğin: Tayland). Başka hiçbir kelime, açıklama veya noktalama yazma.";
 
     private static final int GOSTERME_SURESI_MS = 15000;
     private static final String CEKIM_YAZISI = "GG";   // Ekran görüntüsü alınınca kısa süre görünür ("" = kapalı)
@@ -116,7 +113,7 @@ public class GeoService extends AccessibilityService {
                         | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                 PixelFormat.TRANSLUCENT);
 
-        String k = prefs.getString("konum", "sag-orta");
+        String k = prefs.getString("konum", "orta");
         int g;
         if (k.startsWith("sol")) g = Gravity.LEFT;
         else if (k.startsWith("sag")) g = Gravity.RIGHT;
@@ -239,6 +236,8 @@ public class GeoService extends AccessibilityService {
             }
             if (cevap == null || cevap.trim().isEmpty()) {
                 cevap = "Hata:\n" + hatalar.toString().trim();
+            } else {
+                cevap = ilkIkiHarf(cevap);
             }
         } catch (Exception e) {
             cevap = "Hata: " + e.getMessage();
@@ -246,6 +245,17 @@ public class GeoService extends AccessibilityService {
             mesgul = false;
         }
         yaziGoster(cevap.trim());
+    }
+
+    /** "Tayland" -> "TA". Sadece harfler sayılır. */
+    private static String ilkIkiHarf(String metin) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < metin.length() && sb.length() < 2; i++) {
+            char c = metin.charAt(i);
+            if (Character.isLetter(c)) sb.append(c);
+        }
+        if (sb.length() == 0) return "?";
+        return sb.toString().toUpperCase(new java.util.Locale("tr", "TR"));
     }
 
     private String istek(String model, String anahtar, String b64, boolean hizli) throws Exception {

@@ -24,10 +24,10 @@ public class MainActivity extends Activity {
     static final String PREFS = "ayarlar";
 
     static final String[] KONUMLAR = {
-            "sag-ust", "sol-ust", "orta-ust", "sag-orta", "sol-orta", "sag-alt", "sol-alt"
+            "orta", "sag-ust", "sol-ust", "orta-ust", "sag-orta", "sol-orta", "sag-alt", "sol-alt"
     };
     static final String[] KONUM_ADLARI = {
-            "Sağ üst", "Sol üst", "Orta üst", "Sağ orta", "Sol orta", "Sağ alt", "Sol alt"
+            "Tam orta", "Sağ üst", "Sol üst", "Orta üst", "Sağ orta", "Sol orta", "Sağ alt", "Sol alt"
     };
 
     private int dp(int v) {
@@ -67,7 +67,7 @@ public class MainActivity extends Activity {
         // --- Dokunma alanı ---
         l.addView(baslik("2) 3 kez dokunulacak alan nerede olsun?"));
         final RadioGroup konumlar = new RadioGroup(this);
-        String secili = p.getString("konum", "sag-orta");
+        String secili = p.getString("konum", "orta");
         for (int i = 0; i < KONUMLAR.length; i++) {
             RadioButton r = new RadioButton(this);
             r.setText(KONUM_ADLARI[i]);
@@ -111,7 +111,7 @@ public class MainActivity extends Activity {
         kaydet.setText("Kaydet");
         kaydet.setOnClickListener(v -> {
             int id = konumlar.getCheckedRadioButtonId();
-            String konum = (id >= 1000 && id < 1000 + KONUMLAR.length) ? KONUMLAR[id - 1000] : "sag-orta";
+            String konum = (id >= 1000 && id < 1000 + KONUMLAR.length) ? KONUMLAR[id - 1000] : "orta";
             p.edit()
                     .putString("anahtar", anahtar.getText().toString().trim())
                     .putString("konum", konum)
@@ -132,7 +132,7 @@ public class MainActivity extends Activity {
         bilgi.setText("Kullanım:\n"
                 + "• Anahtarı yapıştırıp Kaydet'e basın.\n"
                 + "• 'Erişilebilirlik ayarlarını aç' → Yüklü uygulamalar → Ülke Bulucu → Aç.\n"
-                + "• Seçtiğiniz alana art arda 3 kez dokunun; cevap ekranın altında soluk yazıyla çıkar.\n"
+                + "• Seçtiğiniz alana art arda 3 kez dokunun; ekranın altında ülke adının ilk iki harfi çıkar (Tayland → TA).\n"
                 + "• Ayarı değiştirince Kaydet'e basmanız yeterli, servis kendini günceller.");
         l.addView(bilgi);
 
