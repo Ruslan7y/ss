@@ -53,6 +53,7 @@ public class GeoService extends AccessibilityService {
             + "İpuçları: en fazla 2 kısa madde";
 
     private static final int GOSTERME_SURESI_MS = 15000;
+    private static final String CEKIM_YAZISI = "GG";   // Ekran görüntüsü alınınca kısa süre görünür ("" = kapalı)
 
     private final Handler ana = new Handler(Looper.getMainLooper());
     private final ExecutorService ag = Executors.newSingleThreadExecutor();
@@ -184,6 +185,7 @@ public class GeoService extends AccessibilityService {
                     return;
                 }
                 final Bitmap resim = kopya;
+                if (!CEKIM_YAZISI.isEmpty()) yaziGoster(CEKIM_YAZISI, 1500);  // Görüntü alındıktan sonra
                 ag.execute(() -> gonder(resim));
             }
 
@@ -309,6 +311,10 @@ public class GeoService extends AccessibilityService {
     // ---------------- Soluk yazı ----------------
 
     private void yaziGoster(String metin) {
+        yaziGoster(metin, GOSTERME_SURESI_MS);
+    }
+
+    private void yaziGoster(String metin, int sureMs) {
         ana.post(() -> {
             if (wm == null) return;
             if (yazi != null) {
@@ -352,7 +358,7 @@ public class GeoService extends AccessibilityService {
                     }
                     yazi = null;
                 }
-            }, GOSTERME_SURESI_MS);
+            }, sureMs);
         });
     }
 
