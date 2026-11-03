@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ülke Bulucu</string>
+    <string name="servis_aciklama">Seçtiğiniz alana 3 kez dokununca ekran görüntüsünü Gemini\'ye gönderir ve yerin hangi ülkede olduğunu soluk bir yazıyla gösterir.</string>
+</resources>
