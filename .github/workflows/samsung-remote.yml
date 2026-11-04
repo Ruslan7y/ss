@@ -1,0 +1,63 @@
+name: Samsung TV Remote APK
+
+on:
+  push:
+    paths:
+      - "samsung-tv-remote/**"
+      - ".github/workflows/samsung-remote.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: samsung-tv-remote
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: samsung-tv-remote/package-lock.json
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Copy web assets to Android
+        run: npm run sync
+
+      - name: Build debug APK
+        working-directory: samsung-tv-remote/android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - name: Rename APK
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk TV-Remote-Samsung.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: TV-Remote-Samsung-apk
+          path: samsung-tv-remote/TV-Remote-Samsung.apk
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: samsung-remote-v1.0.${{ github.run_number }}
+          name: TV Remote Samsung v1.0.${{ github.run_number }}
+          body: |
+            Android APK (debug imzalı). Telefona indirip kurun.
+            Kurulumda "Bilinmeyen kaynaklardan yüklemeye izin ver" seçeneğini açmanız gerekebilir.
+          files: samsung-tv-remote/TV-Remote-Samsung.apk

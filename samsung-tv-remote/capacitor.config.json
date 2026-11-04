@@ -1,0 +1,8 @@
+{
+  "appId": "com.ruslan.tvremote",
+  "appName": "TV Remote Samsung",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#000000"
+  }
+}

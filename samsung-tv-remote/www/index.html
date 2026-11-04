@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>TV Remote Samsung</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="status"><span class="dot" id="dot"></span><span id="stxt">Kapalı</span></div>
+    <h1>TV Remote Samsung</h1>
+    <div style="min-width:44px"></div>
+  </div>
+  <div class="demo-badge">DEMO MODU · TV'ye komut gitmiyor</div>
+
+  <div class="views">
+    <section class="view active" id="v-remote">
+      <div class="top">
+        <button class="b power" data-key="KEY_POWER" aria-label="Güç">
+          <svg viewBox="0 0 24 24"><path d="M12 3v8"/><path d="M6.3 6.8a8 8 0 1 0 11.4 0"/></svg>
+        </button>
+        <div class="seg">
+          <button id="m-dpad" aria-label="Yön tuşları"><svg viewBox="0 0 24 24"><path d="M12 3l3 4H9zM12 21l-3-4h6zM3 12l4-3v6zM21 12l-4 3V9z" fill="#fff"/><circle cx="12" cy="12" r="2.2"/></svg></button>
+          <button id="m-num" class="sel" aria-label="Rakamlar"><svg viewBox="0 0 24 24" fill="#fff"><g fill="#fff" stroke="none"><circle cx="6" cy="5" r="1.6"/><circle cx="12" cy="5" r="1.6"/><circle cx="18" cy="5" r="1.6"/><circle cx="6" cy="11" r="1.6"/><circle cx="12" cy="11" r="1.6"/><circle cx="18" cy="11" r="1.6"/><circle cx="6" cy="17" r="1.6"/><circle cx="12" cy="17" r="1.6"/><circle cx="18" cy="17" r="1.6"/><circle cx="12" cy="22" r="1.6"/></g></svg></button>
+        </div>
+        <button class="b src" data-key="KEY_SOURCE" aria-label="Kaynak">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 12h8M13 9l3 3-3 3"/></svg>
+        </button>
+      </div>
+
+      <div id="pad">
+        <div class="nums">
+          <button class="b" data-key="KEY_0">0</button><button class="b" data-key="KEY_1">1</button>
+          <button class="b" data-key="KEY_2">2</button><button class="b" data-key="KEY_3">3</button>
+          <button class="b" data-key="KEY_4">4</button><button class="b" data-key="KEY_5">5</button>
+          <button class="b" data-key="KEY_6">6</button><button class="b" data-key="KEY_7">7</button>
+          <button class="b" data-key="KEY_8">8</button><button class="b" data-key="KEY_9">9</button>
+        </div>
+        <div class="dpad-wrap">
+          <div class="dpad">
+            <button class="arr up" data-key="KEY_UP" data-repeat><svg viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg></button>
+            <button class="arr left" data-key="KEY_LEFT" data-repeat><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+            <button class="ok" data-key="KEY_ENTER">OK</button>
+            <button class="arr right" data-key="KEY_RIGHT" data-repeat><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+            <button class="arr down" data-key="KEY_DOWN" data-repeat><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row4">
+        <button class="b" data-key="KEY_MENU" aria-label="Menü"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <button class="b" data-key="KEY_TOOLS" aria-label="Araçlar"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></button>
+        <button class="b" data-key="KEY_HDMI" aria-label="HDMI"><svg viewBox="0 0 24 24"><path d="M4 9h16v4l-2 2H6l-2-2z"/><path d="M8 12h8"/></svg></button>
+        <button class="b" data-key="KEY_ENTER" aria-label="Enter"><svg viewBox="0 0 24 24"><path d="M19 6v5a2 2 0 0 1-2 2H6"/><path d="M9 9l-4 4 4 4"/></svg></button>
+      </div>
+      <div class="row4">
+        <button class="b color red" data-key="KEY_RED" aria-label="Kırmızı"></button>
+        <button class="b color green" data-key="KEY_GREEN" aria-label="Yeşil"></button>
+        <button class="b color yellow" data-key="KEY_YELLOW" aria-label="Sarı"></button>
+        <button class="b color blue" data-key="KEY_CYAN" aria-label="Mavi"></button>
+      </div>
+      <div class="row4" style="grid-template-columns:3fr 1fr">
+        <div></div>
+        <button class="b" data-key="KEY_INFO" aria-label="Bilgi"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></button>
+      </div>
+
+      <div class="ctl">
+        <div class="rocker">
+          <button data-key="KEY_CHUP" data-repeat aria-label="Kanal yukarı"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+          <span>CH</span>
+          <button data-key="KEY_CHDOWN" data-repeat aria-label="Kanal aşağı"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+        </div>
+        <button class="b mid" data-key="KEY_RETURN" aria-label="Geri"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>
+        <button class="b mid" data-key="KEY_MUTE" aria-label="Sessiz"><svg viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 10l4 4M21 10l-4 4"/></svg></button>
+        <div class="rocker">
+          <button data-key="KEY_VOLUP" data-repeat aria-label="Ses aç"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+          <span>VOL</span>
+          <button data-key="KEY_VOLDOWN" data-repeat aria-label="Ses kıs"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+        </div>
+        <button class="b mid txt" data-key="KEY_3D" aria-label="3D">3D</button>
+        <button class="b mid" data-key="KEY_HELP" aria-label="Yardım"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.5V14M12 17h.01"/></svg></button>
+      </div>
+
+      <div class="row3">
+        <button class="b" data-key="KEY_HOME" aria-label="Ana ekran"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="11" cy="11" r="3"/><path d="M13.5 13.5L16 16"/></svg></button>
+        <button class="b" data-key="KEY_CH_LIST" aria-label="Kanal listesi"><svg viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/></svg></button>
+        <button class="b" data-key="KEY_TV" aria-label="TV"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 8v5M9.5 10.5L12 13l2.5-2.5"/></svg></button>
+      </div>
+    </section>
+
+    <!-- CONNECT -->
+    <section class="view" id="v-connect">
+      <div class="card">
+        <div class="radar" id="radar">
+          <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+          <div class="core"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        </div>
+        <div class="scan-title" id="scanTitle">TV'ni bul</div>
+        <div class="scan-sub" id="scanSub">Wi‑Fi ve Bluetooth ile yakındaki TV'ler aranır</div>
+        <button class="primary" id="btnScan">TV Ara</button>
+        <div class="info" id="scanInfo"></div>
+      </div>
+
+      <div class="card">
+        <div class="sec-h"><svg viewBox="0 0 24 24"><path d="M2 9a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0"/><path d="M12 19.5h.01"/></svg> Wi‑Fi <span class="st" id="wifiSt">Hazır</span></div>
+        <div id="wifiList"><div class="empty">Taramayı başlatmak için "TV Ara"ya dokun.</div></div>
+      </div>
+
+      <div class="card">
+        <div class="sec-h"><svg viewBox="0 0 24 24"><path d="M7 7l10 10-5 5V2l5 5L7 17"/></svg> Bluetooth <span class="st" id="btSt">Hazır</span></div>
+        <div id="btList"><div class="empty">Bluetooth açıksa yakındaki TV'ler burada listelenir.</div></div>
+      </div>
+
+      <div class="card">
+        <details id="manual">
+          <summary>IP adresiyle elle bağlan</summary>
+          <p style="margin-top:10px">TV'nin IP adresi: <b>Ayarlar › Genel › Ağ › Ağ Durumu</b></p>
+          <label for="ip">TV IP adresi</label>
+          <input id="ip" inputmode="decimal" placeholder="192.168.1.50" autocomplete="off">
+          <label for="port">Bağlantı türü</label>
+          <select id="port">
+            <option value="8002">Güvenli (port 8002) – 2016 ve sonrası</option>
+            <option value="8001">Standart (port 8001) – eski modeller</option>
+          </select>
+          <button class="primary" id="btnConnect">Bağlan</button>
+          <button class="ghost" id="btnDisconnect">Bağlantıyı kes</button>
+        </details>
+      </div>
+
+      <div class="card">
+        <details>
+          <summary>Bağlantı günlüğü</summary>
+          <div class="log" id="log" style="margin-top:10px">—</div>
+        </details>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="view" id="v-settings">
+      <div class="card">
+        <h2>Ayarlar</h2>
+        <div class="switch">Titreşim <input type="checkbox" id="optVib" checked></div>
+        <div class="switch">Basılı tutunca tekrarla <input type="checkbox" id="optRep" checked></div>
+        <div class="switch">Açılışta son TV'ye bağlan <input type="checkbox" id="optAuto" checked></div>
+        <label for="devName">Kumanda adı (TV'de görünür)</label>
+        <input id="devName" value="Telefon Kumandasi">
+      </div>
+      <div class="card">
+        <h2>Demo modu</h2>
+        <p>TV olmadan arayüzü denemek için. Demo modunda butonlar çalışır görünür ama TV'ye komut gönderilmez; ekranda turuncu "DEMO" etiketi görünür.</p>
+        <div class="switch">Demo modu <input type="checkbox" id="optDemo"></div>
+      </div>
+      <div class="card">
+        <button class="ghost" id="btnGuide" style="margin-top:0">Bağlantı kılavuzunu göster</button>
+        <button class="ghost" id="btnReset">Kayıtlı TV izinlerini sil</button>
+      </div>
+    </section>
+  </div>
+
+  <nav class="tabbar">
+    <button class="tab" data-view="connect"><svg viewBox="0 0 24 24"><path d="M2 9a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r=".8" fill="currentColor"/></svg>Connect</button>
+    <button class="tab sel" data-view="remote"><svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="3"/><circle cx="12" cy="7" r="1.5"/><path d="M10 12h.01M14 12h.01M10 15h.01M14 15h.01M10 18h.01M14 18h.01"/></svg>Remote</button>
+    <button class="tab" data-view="settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Settings</button>
+  </nav>
+</div>
+
+<!-- ONBOARDING -->
+<div class="ob" id="ob" role="dialog" aria-label="Bağlantı kılavuzu">
+  <div class="ob-top"><button class="ob-skip" id="obSkip">Atla</button></div>
+  <div class="ob-track" id="obTrack">
+    <div class="ob-slide">
+      <div class="ob-ill"><svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="3"/><circle cx="12" cy="7" r="1.5"/><path d="M10 12h.01M14 12h.01M10 15h.01M14 15h.01M10 18h.01M14 18h.01"/></svg></div>
+      <div class="ob-step">Hoş geldin</div>
+      <h2>Telefonun artık TV kumandan</h2>
+      <p>Samsung Smart TV'ni bu uygulamadan yönetebilirsin. Bağlanmak sadece birkaç adım sürer.</p>
+    </div>
+    <div class="ob-slide">
+      <div class="ob-ill"><svg viewBox="0 0 24 24"><path d="M2 9a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0"/><path d="M12 19.5h.01"/></svg></div>
+      <div class="ob-step">Adım 1</div>
+      <h2>Aynı Wi‑Fi ağına bağlan</h2>
+      <p>TV'ni aç. Telefonun ve TV'nin <b>aynı Wi‑Fi ağına</b> bağlı olduğundan emin ol. Kumanda komutları Wi‑Fi üzerinden gönderilir.</p>
+    </div>
+    <div class="ob-slide">
+      <div class="ob-ill"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+      <div class="ob-step">Adım 2</div>
+      <h2>TV'ni ara ve seç</h2>
+      <ol>
+        <li>Alttaki <b>Connect</b> sekmesine gir.</li>
+        <li><b>TV Ara</b>'ya dokun. Wi‑Fi ve Bluetooth birlikte taranır.</li>
+        <li>Listede çıkan TV'ne dokun.</li>
+      </ol>
+      <p style="margin-top:10px;font-size:13px">Bluetooth izni istenirse "İzin ver" de.</p>
+    </div>
+    <div class="ob-slide">
+      <div class="ob-ill"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <div class="ob-step">Adım 3</div>
+      <h2>TV'de izin ver</h2>
+      <p>İlk bağlantıda TV ekranında bir uyarı çıkar. TV'nin kendi kumandasıyla <b>İzin Ver</b>'i seç. Bu sadece bir kez sorulur.</p>
+      <p style="margin-top:10px;font-size:13px">TV bulunamazsa IP adresiyle elle de bağlanabilirsin.</p>
+    </div>
+  </div>
+  <div class="ob-dots" id="obDots"><i class="on"></i><i></i><i></i><i></i></div>
+  <button class="ob-next" id="obNext">İleri</button>
+  <button class="ob-never" id="obNever">Bir daha gösterme</button>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="capacitor.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

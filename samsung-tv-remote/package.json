@@ -1,0 +1,19 @@
+{
+  "name": "samsung-tv-remote",
+  "version": "1.0.0",
+  "description": "Samsung TV Remote - Android app",
+  "scripts": {
+    "build": "node -e \"require('fs').copyFileSync('node_modules/@capacitor/core/dist/capacitor.js','www/capacitor.js')\"",
+    "sync": "npm run build && npx cap sync android"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@capacitor-community/bluetooth-le": "^7.3.2",
+    "@capacitor/android": "^7.6.10",
+    "@capacitor/core": "^7.6.10"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.6.10"
+  }
+}

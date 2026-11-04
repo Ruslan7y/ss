@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">TV Remote Samsung</string>
+    <string name="title_activity_main">TV Remote Samsung</string>
+    <string name="package_name">com.ruslan.tvremote</string>
+    <string name="custom_url_scheme">com.ruslan.tvremote</string>
+</resources>
