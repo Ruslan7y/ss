@@ -363,6 +363,47 @@
   let lastTouch = 0;
   document.addEventListener('touchend', e => { const n = Date.now(); if (n - lastTouch < 300 && e.target.closest('button')) e.preventDefault(); lastTouch = n; }, { passive: false });
 
+  /* ---------- Secret shortcut (easter egg): press 5, then hold green ---------- */
+  const secret = { url: store.get('secretUrl', ''), fiveAt: 0 };
+  const secUrlEl = $('#secretUrl');
+  if (secUrlEl) {
+    secUrlEl.value = secret.url;
+    secUrlEl.onchange = () => {
+      let u = secUrlEl.value.trim();
+      if (u && !/^https?:\/\//i.test(u)) u = 'https://' + u;
+      secret.url = u; secUrlEl.value = u; store.set('secretUrl', u);
+    };
+  }
+  function openSecret() {
+    secret.fiveAt = 0;
+    vibrate(35);
+    const u = secret.url;
+    if (u && /^https?:\/\//i.test(u)) {
+      // APK ya da http sunucuda: bütün ekran o adrese geçer
+      if (isNative || /^https?:/.test(location.protocol)) { window.location.href = u; return; }
+      // file:// (salt önizleme) CSP dış adrese izin vermez
+      $('#secretMsg').textContent = 'Önizlemede dış adres açılamıyor.';
+      $('#secret .secret-inner p').textContent = 'Bu kısayol kurulu uygulamada (APK) senin URL\'ine geçer. Adres: ' + u;
+    } else {
+      $('#secretMsg').textContent = 'Gizli ekran adresi ayarlı değil.';
+      $('#secret .secret-inner p').textContent = 'Ayarlar › Gizli ekran bölümünden bir URL gir, sonra kısayolu tekrar dene.';
+    }
+    $('#secret').classList.add('show');
+  }
+  $('#secretClose').addEventListener('click', () => $('#secret').classList.remove('show'));
+  (() => {
+    const five = document.querySelector('[data-key="KEY_5"]');
+    const green = document.querySelector('[data-key="KEY_GREEN"]');
+    if (five) five.addEventListener('pointerdown', () => { secret.fiveAt = Date.now(); });
+    if (green) {
+      let gt;
+      green.addEventListener('pointerdown', () => {
+        if (Date.now() - secret.fiveAt < 5000) gt = setTimeout(openSecret, 900);
+      });
+      ['pointerup', 'pointerleave', 'pointercancel'].forEach(t => green.addEventListener(t, () => clearTimeout(gt)));
+    }
+  })();
+
   /* ---------- Startup ---------- */
   renderStatus();
   if (!store.get('hideGuide', false)) obOpen();

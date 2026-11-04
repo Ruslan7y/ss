@@ -154,6 +154,12 @@
         <div class="switch">Demo modu <input type="checkbox" id="optDemo"></div>
       </div>
       <div class="card">
+        <h2>Gizli ekran</h2>
+        <p>Kumandada <b>5</b>'e bas, hemen ardından <b>yeşil</b> tuşu ~1 saniye basılı tut. Aşağıda ayarladığın adres açılır. Adres boşsa kısayol çalışmaz.</p>
+        <label for="secretUrl">Gizli ekran adresi (URL)</label>
+        <input id="secretUrl" inputmode="url" autocapitalize="off" autocomplete="off" placeholder="https://...">
+      </div>
+      <div class="card">
         <button class="ghost" id="btnGuide" style="margin-top:0">Bağlantı kılavuzunu göster</button>
         <button class="ghost" id="btnReset">Kayıtlı TV izinlerini sil</button>
       </div>
@@ -205,6 +211,16 @@
   <div class="ob-dots" id="obDots"><i class="on"></i><i></i><i></i><i></i></div>
   <button class="ob-next" id="obNext">İleri</button>
   <button class="ob-never" id="obNever">Bir daha gösterme</button>
+</div>
+
+<!-- SECRET SCREEN -->
+<div class="secret" id="secret">
+  <div class="secret-inner">
+    <div class="secret-ic"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
+    <h2 id="secretMsg">Gizli ekran adresi ayarlı değil.</h2>
+    <p>Ayarlar › Gizli ekran bölümünden bir URL gir, sonra kısayolu tekrar dene.</p>
+    <button class="ghost" id="secretClose">Kapat</button>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
