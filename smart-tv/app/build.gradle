@@ -1,0 +1,36 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.ruslan.smarttv'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.ruslan.smarttv"
+        minSdk 30          // Android 11 ve üstü (ekran görüntüsü özelliği için gerekli)
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+    }
+
+    // Sabit imza: sonraki sürümler eskisinin üzerine kurulur
+    signingConfigs {
+        sabit {
+            storeFile file('imza.jks')
+            storePassword 'smarttv2026'
+            keyAlias 'tv'
+            keyPassword 'smarttv2026'
+        }
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.sabit
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
