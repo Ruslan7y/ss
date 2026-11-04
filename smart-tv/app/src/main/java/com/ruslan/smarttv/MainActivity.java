@@ -21,6 +21,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -73,10 +75,56 @@ public class MainActivity extends Activity {
         return paket;
     }
 
+    /** Şifre düz metin saklanmaz, özeti (SHA-256) saklanır */
+    static String ozet(String s) {
+        try {
+            byte[] b = MessageDigest.getInstance("SHA-256").digest(("smarttv:" + s).getBytes(StandardCharsets.UTF_8));
+            StringBuilder sb = new StringBuilder();
+            for (byte x : b) sb.append(String.format("%02x", x));
+            return sb.toString();
+        } catch (Exception e) {
+            return s;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final SharedPreferences p = getSharedPreferences(PREFS, MODE_PRIVATE);
+        if (!p.getString("sifre", "").isEmpty()) sifreEkrani(p);
+        else ayarlarEkrani(p);
+    }
+
+    private void sifreEkrani(final SharedPreferences p) {
+        LinearLayout l = new LinearLayout(this);
+        l.setOrientation(LinearLayout.VERTICAL);
+        l.setPadding(dp(32), dp(80), dp(32), dp(32));
+        TextView t = new TextView(this);
+        t.setText("Smart TV");
+        t.setTextSize(24);
+        l.addView(t);
+        TextView a = new TextView(this);
+        a.setText("Devam etmek için şifreyi girin");
+        a.setPadding(0, dp(12), 0, dp(8));
+        l.addView(a);
+        final EditText giris = new EditText(this);
+        giris.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+        giris.setHint("Şifre");
+        l.addView(giris);
+        Button ac = new Button(this);
+        ac.setText("Aç");
+        ac.setOnClickListener(v -> {
+            if (ozet(giris.getText().toString()).equals(p.getString("sifre", ""))) ayarlarEkrani(p);
+            else {
+                giris.setText("");
+                Toast.makeText(this, "Şifre yanlış", Toast.LENGTH_SHORT).show();
+            }
+        });
+        l.addView(ac);
+        setContentView(l);
+    }
+
+    private void ayarlarEkrani(final SharedPreferences p) {
 
         // İlk açılışta GeoGuessr yüklüyse onu seç
         secilenPaket = p.getString("oyunPaket", "");
@@ -165,6 +213,15 @@ public class MainActivity extends Activity {
         l.addView(saydamYazi);
         l.addView(saydam);
 
+        l.addView(baslik("5) Uygulama şifresi"));
+        final EditText sifre = new EditText(this);
+        sifre.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+        sifre.setHint(p.getString("sifre", "").isEmpty() ? "Şifre yok – yeni şifre yazın (sadece rakam)" : "Şifre var – değiştirmek için yenisini yazın");
+        l.addView(sifre);
+        final CheckBox sifreKaldir = new CheckBox(this);
+        sifreKaldir.setText("Şifreyi kaldır");
+        if (!p.getString("sifre", "").isEmpty()) l.addView(sifreKaldir);
+
         Button kaydet = new Button(this);
         kaydet.setText("Kaydet");
         kaydet.setOnClickListener(v -> {
@@ -178,6 +235,16 @@ public class MainActivity extends Activity {
                     .putBoolean("goster", goster.isChecked())
                     .putInt("saydamlik", saydam.getProgress() + 20)
                     .apply();
+            String yeni = sifre.getText().toString().trim();
+            if (sifreKaldir.isChecked()) p.edit().putString("sifre", "").apply();
+            else if (!yeni.isEmpty()) {
+                if (yeni.length() < 4) {
+                    Toast.makeText(this, "Şifre en az 4 rakam olmalı", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                p.edit().putString("sifre", ozet(yeni)).apply();
+                sifre.setText("");
+            }
             Toast.makeText(this, "Kaydedildi", Toast.LENGTH_SHORT).show();
         });
         l.addView(kaydet);
